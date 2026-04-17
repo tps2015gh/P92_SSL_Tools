@@ -13,17 +13,20 @@ import (
 
 func main() {
 	var filePath string
+	var insecure bool
 	var rootCmd = &cobra.Command{
 		Use:   "ssl-check [domain1] [domain2] ...",
 		Short: "Check SSL certificate expiration, start date, company, and issuer",
-		Long: `A CLI tool to check SSL certificate details for one or more domains.
+		Long: `A CLI tool to check SSL certificate details for one or more domains or IP addresses.
 Domains can be provided as direct arguments or through a text file.
 Each domain is automatically cleaned (removing http/https and trailing slashes).
+
+Use the --insecure flag to check certificates when connecting via IP address.
 
 Examples:
   ssl-check google.com github.com
   ssl-check -f domains.txt
-  ssl-check -f domains.txt microsoft.com`,
+  ssl-check -i 142.250.190.46`,
 		Run: func(cmd *cobra.Command, args []string) {
 			// Show help if no input provided
 			if filePath == "" && len(args) == 0 {
@@ -44,18 +47,19 @@ Examples:
 					if domain == "" {
 						continue
 					}
-					checkSSL(domain)
+					checkSSL(domain, insecure)
 				}
 			}
 
 			// Process domains from arguments
 			for _, domain := range args {
-				checkSSL(domain)
+				checkSSL(domain, insecure)
 			}
 		},
 	}
 
 	rootCmd.Flags().StringVarP(&filePath, "file", "f", "", "Path to a text file containing domains (one per line)")
+	rootCmd.Flags().BoolVarP(&insecure, "insecure", "i", false, "Skip certificate verification (useful for IP checks)")
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
@@ -63,7 +67,7 @@ Examples:
 	}
 }
 
-func checkSSL(domain string) {
+func checkSSL(domain string, insecure bool) {
 	// Remove https:// if present
 	domain = strings.TrimPrefix(domain, "https://")
 	domain = strings.TrimPrefix(domain, "http://")
@@ -76,7 +80,7 @@ func checkSSL(domain string) {
 	conn, err := tls.DialWithDialer(&net.Dialer{
 		Timeout: 10 * time.Second,
 	}, "tcp", domain, &tls.Config{
-		InsecureSkipVerify: false,
+		InsecureSkipVerify: insecure,
 	})
 
 	if err != nil {
