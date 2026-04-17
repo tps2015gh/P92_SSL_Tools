@@ -50,16 +50,23 @@ Then run:
 ./ssl-check.exe --file list.txt
 ```
 
-### Help
-To see all options:
-```bash
-go run main.go --help
-```
+## Benefits
+- **Zero Dependencies**: Compiled Go binary runs without needing any runtime or libraries.
+- **Fast Execution**: Uses Go's efficient networking to audit dozens of domains in seconds.
+- **Safe Inspection**: Connects via TLS to read public certificate metadata without requiring administrative access.
+- **Human-Readable**: Provides a clear summary with status flags (VALID, EXPIRING SOON, EXPIRED).
+- **Automation Friendly**: The `--file` flag allows for easy integration into cron jobs or shell scripts.
 
-## Team
+## Use Cases
+- **DevOps/SRE Audits**: Quickly check the status of all microservice endpoints before a release.
+- **Compliance Monitoring**: Ensure all public-facing company domains meet security standards (correct CA, valid dates).
+- **Pre-migration Checks**: Verify SSL validity after changing DNS records or moving to a new Load Balancer.
+- **3rd Party Vendor Tracking**: Keep track of when certificates for external partner APIs are set to expire.
+
+## Team Dev
 This project is a collaborative effort between:
-- **Human Developer**: P92 Team / User (Design, Review, and Direction)
-- **AI Assistant**: Gemini CLI (Architecture, Implementation, and Documentation)
+- **Human Lead**: [tps2015gh](https://github.com/tps2015gh) (Architecture, Direction, and Review)
+- **AI Developer**: **Gemini CLI** (Implementation, Logic Design, and Documentation)
 
 ## License
 Distributed under the MIT License. See `LICENSE` for more information.
