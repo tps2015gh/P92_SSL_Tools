@@ -25,6 +25,12 @@ Examples:
   ssl-check -f domains.txt
   ssl-check -f domains.txt microsoft.com`,
 		Run: func(cmd *cobra.Command, args []string) {
+			// Show help if no input provided
+			if filePath == "" && len(args) == 0 {
+				cmd.Help()
+				return
+			}
+
 			// Process domains from file if provided
 			if filePath != "" {
 				data, err := os.ReadFile(filePath)
