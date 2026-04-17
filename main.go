@@ -12,16 +12,37 @@ import (
 )
 
 func main() {
+	var filePath string
 	var rootCmd = &cobra.Command{
 		Use:   "ssl-check [domain1] [domain2] ...",
 		Short: "Check SSL certificate expiration, start date, company, and issuer",
-		Args:  cobra.MinimumNArgs(1),
+		Long:  "Check SSL certificate details for domains provided as arguments or from a text file (one URL per line).",
 		Run: func(cmd *cobra.Command, args []string) {
+			// Process domains from file if provided
+			if filePath != "" {
+				data, err := os.ReadFile(filePath)
+				if err != nil {
+					fmt.Printf("Error reading file %s: %v\n", filePath, err)
+					os.Exit(1)
+				}
+				lines := strings.Split(string(data), "\n")
+				for _, line := range lines {
+					domain := strings.TrimSpace(line)
+					if domain == "" {
+						continue
+					}
+					checkSSL(domain)
+				}
+			}
+
+			// Process domains from arguments
 			for _, domain := range args {
 				checkSSL(domain)
 			}
 		},
 	}
+
+	rootCmd.Flags().StringVarP(&filePath, "file", "f", "", "Path to a text file containing domains (one per line)")
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
