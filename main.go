@@ -16,7 +16,14 @@ func main() {
 	var rootCmd = &cobra.Command{
 		Use:   "ssl-check [domain1] [domain2] ...",
 		Short: "Check SSL certificate expiration, start date, company, and issuer",
-		Long:  "Check SSL certificate details for domains provided as arguments or from a text file (one URL per line).",
+		Long: `A CLI tool to check SSL certificate details for one or more domains.
+Domains can be provided as direct arguments or through a text file.
+Each domain is automatically cleaned (removing http/https and trailing slashes).
+
+Examples:
+  ssl-check google.com github.com
+  ssl-check -f domains.txt
+  ssl-check -f domains.txt microsoft.com`,
 		Run: func(cmd *cobra.Command, args []string) {
 			// Process domains from file if provided
 			if filePath != "" {

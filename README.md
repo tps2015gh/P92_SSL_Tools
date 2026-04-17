@@ -33,6 +33,12 @@ Run the tool by passing one or more domains as arguments:
 go run main.go google.com github.com https://microsoft.com
 ```
 
+### Batch Processing
+You can also provide a list of domains in a text file (one URL per line). Lines are automatically trimmed and empty lines are skipped.
+```bash
+go run main.go --file domains.txt
+```
+
 ### Build the binary
 To build a standalone executable:
 ```bash
@@ -41,6 +47,13 @@ go build -o ssl-check.exe main.go
 Then run:
 ```bash
 ./ssl-check.exe google.com
+./ssl-check.exe --file list.txt
+```
+
+### Help
+To see all options:
+```bash
+go run main.go --help
 ```
 
 ## Team
