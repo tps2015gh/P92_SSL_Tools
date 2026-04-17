@@ -13,6 +13,14 @@ A simple Go-based CLI tool to check SSL certificate details for multiple domains
 ## Requirements
 - Go 1.16 or higher
 
+## Technology Stack
+- **Language**: [Go (Golang)](https://golang.org/) - Chosen for its strong standard library support for TLS/SSL and efficient concurrency.
+- **CLI Framework**: [Cobra](https://github.com/spf13/cobra) - A powerful library for creating modern CLI applications, providing easy command and argument parsing.
+- **Networking/Security**: 
+  - `crypto/tls`: Standard Go library used to establish secure connections and inspect peer certificates.
+  - `net`: Used for TCP connection handling and timeout management.
+- **Build System**: Custom batch script for Windows environments.
+
 ## Installation
 Clone the repository and run:
 ```bash
